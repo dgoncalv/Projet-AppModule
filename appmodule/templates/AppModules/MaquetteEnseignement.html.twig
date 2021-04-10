@@ -1,0 +1,176 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}AppModules{% endblock %}
+
+{% block stylesheets %}{% endblock %}
+
+{% block body %}
+    <div class="col-12">
+        <!--Navigation Semestre-->
+        <div class="row justify-content-center py-5">
+            <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                <div class="btn-group show" role="group">
+                    <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"></button>
+                    <div class="dropdown-menu" aria-labelledby="btnGroupDrop1" style="position: absolute;transform: translate3d(0px, 38px, 0px);top: 0px;left: 0px;will-change: transform;" x-placement="bottom-start">
+                        <a class="dropdown-item" href="{{ path('semestre', {'semester': 1}) }}">Semestre 1</a>
+                        <a class="dropdown-item" href="{{ path('semestre', {'semester': 2}) }}">Semestre 2</a>
+                        <a class="dropdown-item" href="{{ path('semestre', {'semester': 3}) }}">Semestre 3</a>
+                        <a class="dropdown-item" href="{{ path('semestre', {'semester': 4}) }}">Semestre 4</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{{ path('semestre', {'semester': 5}) }}">Licence Pro</a>
+                    </div>
+                </div>
+                {% if semesterNumber != 5 %}
+                    <button type="button" class="btn btn-primary">Semestre {{ semesterNumber }}</button>
+                {% else %}
+                    <button type="button" class="btn btn-primary">Licence Pro</button>
+                {% endif %}
+            </div>
+        </div>
+
+        <!--Tab UE-->
+        <ul class="nav nav-tabs justify-content-around">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#Recap"><h4 class="text-secondary m-0">Recap</h4></a>
+            </li>
+            {% for UENumber in semesterWeeks|keys %}
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#UE{{ semesterNumber }}{{ UENumber|slice(2,1) }}"><h4 class="text-secondary m-0">UE {{ semesterNumber }}{{ UENumber|slice(2,1) }}</h4></a>
+                </li>
+            {% endfor %}
+        </ul>
+
+        <!--Contenu Tabs-->
+        <div id="myTabContent" class="tab-content">
+
+            <!--Calculs de la charge horaire par semaine-->
+            {% set chargeParSemaine = [] %}
+            {% set chargeParSemaineUE1 = [] %}
+            {% set chargeParSemaineUE2 = [] %}
+            {% set nbSemaines = 0 %}
+
+            {% for UENumber in semesterWeeks|keys %}
+                {% set chargeParSemaineUE = [] %}
+                {% set nbSemaines = 0 %}
+                {% for semaine in semesterWeeks[UENumber] %}
+                    {% set totalSemaine = 0 %}
+                    {% for module in semaine %}
+                        {% set totalModules = 0 %}
+                        {% for cours in module %}
+                            {% set totalModules = totalModules + cours %}
+                        {% endfor %}
+                        {% set totalSemaine = totalSemaine + totalModules %}
+                    {% endfor %}
+                    {% set chargeParSemaineUE = chargeParSemaineUE|merge([totalSemaine]) %}
+                    {% set nbSemaines = nbSemaines + 1 %}
+                {% endfor %}
+                {% if loop.first %}
+                    {% set chargeParSemaineUE1 = chargeParSemaineUE %}
+                {% else %}
+                    {% set chargeParSemaineUE2 = chargeParSemaineUE %}
+                {% endif %}
+            {% endfor %}
+            {% for i in 0..nbSemaines-1 %}
+                {% set chargeParSemaine = chargeParSemaine|merge([chargeParSemaineUE1[i] + chargeParSemaineUE2[i]]) %}
+            {% endfor %}
+
+            <!--Contenu Recap-->
+            <div class="tab-pane fade active show" id="Recap">
+                {% for UENumber in semesterWeeks|keys %}
+                    {% if loop.last %}
+                        {% set numSemaine = 0 %}
+                        {% if semesterWeeks is defined and semesterWeeks is not empty and semesterWeeks[UENumber] is defined and semesterWeeks[UENumber] is not empty %}
+                            <div class="row mx-0">
+                                <div class="col-4">
+                                    <table class="table table-striped text-center border-left border-right border-bottom ">
+                                        <thead>
+                                        <tr>
+                                            <th scope="colgroup" rowspan="3" colspan="2" class="text-center pb-0">Charge Horaire</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for key, semaine in semesterWeeks[UENumber] %}
+                                            <tr>
+                                                <th scope="row">S{{ key }}</th>
+                                                    {% if chargeParSemaine[numSemaine] > 32 %}
+                                                        <td class="txt-red" scope="row">{{ chargeParSemaine[numSemaine] }}H</td>
+                                                    {% elseif chargeParSemaine[numSemaine] > 28 %}
+                                                        <td class="txt-orange" scope="row">{{ chargeParSemaine[numSemaine] }}H</td>
+                                                    {% else%}
+                                                        <td class="txt-green" scope="row">{{ chargeParSemaine[numSemaine] }}H</td>
+                                                    {% endif %}
+                                                {% set numSemaine = numSemaine + 1 %}
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        {% else %}
+                            <p class="text-center my-3">Oops! La maquette pour ce module n'est pas encore prête...</p>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+
+            <!--Contenu UEs-->
+            {% for UENumber in semesterWeeks|keys %}
+                <div class="tab-pane fade" id="UE{{ semesterNumber }}{{ UENumber|slice(2,1) }}">
+                    {% if semesterWeeks is defined and semesterWeeks is not empty and semesterWeeks[UENumber] is defined and semesterWeeks[UENumber] is not empty %}
+                        <div class="row justify-content-center mx-0">
+                            <table class="table table-striped text-center border-left border-right border-bottom ">
+                                <thead>
+                                <tr>
+                                    <th scope="colgroup" rowspan="3" class="border-left border-right "></th>
+                                    {% for module in semesterModules[UENumber] %}
+                                        <th scope="colgroup" colspan="4" class="border-bottom-0 text-center pb-0"><a href="{{ path('module', {'ppn': (module.PPN|split(' ', 2)[0])}) }}" title="{{ module.intitule|split(' ', 2)[1] }}">{{ module.intitule|split(' ', 2)[0] }}</a></th>
+                                    {% endfor %}
+                                </tr>
+                                <tr>
+                                    {% for module in semesterModules[UENumber] %}
+                                        <th scope="colgroup" colspan="4" class="border-top-0 text-center pt-0">{{ module.responsables }}</th>
+                                    {% endfor %}
+                                </tr>
+                                <tr>
+                                    {% for module in semesterModules[UENumber] %}
+                                        <th scope="col" class="border-left ">CM</th>
+                                        <th scope="col" class="">TD</th>
+                                        <th scope="col" class="">TP</th>
+                                        <th scope="col" class="border-right ">EV</th>
+                                    {% endfor %}
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    {% for key, semaine in semesterWeeks[UENumber] %}
+                                        <tr>
+                                            <th scope="row">S{{ key }}</th>
+                                            {% for module in semaine %}
+                                                {% if module is empty %}
+                                                    <td scope="row"></td>
+                                                    <td scope="row"></td>
+                                                    <td scope="row"></td>
+                                                    <td scope="row"></td>
+                                                {% else %}
+                                                    {% for cours in module %}
+                                                        {% if cours != 0 %}
+                                                            <td scope="row">{{ cours }}</td>
+                                                        {% else %}
+                                                            <td scope="row"></td>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                {% endif %}
+                                            {% endfor %}
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <p class="text-center my-3">Oops! La maquette pour ce module n'est pas encore prête...</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

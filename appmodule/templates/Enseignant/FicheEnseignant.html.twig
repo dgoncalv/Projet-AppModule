@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}AppModules{% endblock %}
+
+{% block body %}
+    <div class="col-xl-12 py-5">
+        <div class="row">
+            <div class="col-xl-10">
+                <h4 class="text-secondary" >{{ enseignant.trigramme }} - {{ enseignant.prenom }} {{ enseignant.nom }} <span class="text-body">({{ enseignant.statut }})</span></h4>
+                <p class="text-body m-0"><span class="text-primary">Contact :</span> {{ enseignant.contact }}</p>
+                <p class="text-body m-0"><span class="text-primary">Service dû :</span> {{ enseignant.serviceDu }} h</p>
+            </div>
+            <div class="col-xl text-right mr-3">
+                <a href="{{ path('enseignant_edit', {'trigramme': enseignant.trigramme}) }}" class="text-decoration-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="24" height="24" viewBox="0 0 172 172" style=" fill:#000000;">
+                        <g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal">
+                            <path d="M0,172v-172h172v172z" fill="none"></path>
+                            <g fill="#78c2ad">
+                                <path d="M129,14.33333l-17.30078,17.30078l28.66667,28.66667l17.30078,-17.30078zM100.87923,42.4541l-79.37923,79.37923v28.66667h28.66667l79.37923,-79.37923z"></path>
+                            </g>
+                        </g>
+                    </svg>
+                </a>
+            </div>
+        </div>
+        <hr class="border-secondary">
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+{% endblock %}

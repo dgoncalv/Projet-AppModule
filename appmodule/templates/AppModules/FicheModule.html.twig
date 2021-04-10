@@ -1,0 +1,90 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}AppModules{% endblock %}
+
+{% block stylesheets %}{% endblock %}
+
+{% block body %}
+<p class="mt-3 text-primary"><a class="breadcrumb-item" href="{{ path('semestre', {'semester': module.PPN|slice(1,1)}) }}">Semestre {{ module.PPN|slice(1,1) }}</a> > {{ module.PPN }}</p>
+<div class="col-12">
+    <h4 class="text-secondary mt-3" >{{ module.PPN }} - {{ module.intitule }}</h4>
+    {% for responsable in moduleResponsables %}
+        <p class="text-body m-0">{{ responsable.trigramme }} - {{ responsable.prenom }} {{ responsable.nom }}</p>
+    {% endfor %}
+
+    <!--Tab Module-->
+    <ul class="nav nav-tabs justify-content-around mt-5">
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#Organisation"><h4 class="text-secondary m-0">Organisation</h4></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#Information"><h4 class="text-secondary m-0">Information</h4></a>
+        </li>
+    </ul>
+
+    <!--Contenu Tabs-->
+    <div id="myTabContent" class="tab-content">
+        <!--Contenu Organisation-->
+        <div class="tab-pane fade active show" id="Organisation">
+            <div class="row justify-content-center mx-0">
+                <table class="table table-striped text-center border-left border-right border-bottom ">
+                    <thead>
+                    <tr>
+                        <th scope="col" rowspan="3" class=""></th>
+                        <th scope="col" colspan="{{ moduleTeachers.CM|length + 1 }}">CM</th>
+                        <th scope="col" colspan="{{ moduleTeachers.TD|length + 1 }}">TD</th>
+                        <th scope="col" colspan="{{ moduleTeachers.TP|length + 1 }}">TP</th>
+                    </tr>
+                    <tr>
+                        {% for typeCours in moduleTeachers %}
+                            <th scope="col" rowspan="2" class="text-warning">h</th>
+                            <th scope="col" colspan="{{ typeCours|length }}">Nombre de séances</th>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        {% for typeCours in moduleTeachers %}
+                            {% for enseignant in typeCours %}
+                                <th scope="col" class=""><span title="{{ enseignant.prenom }} {{ enseignant.nom }}">{{ enseignant.trigramme }}</span></th>
+                            {% endfor %}
+                        {% endfor %}
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {% for num, semaine in moduleWeeks%}
+                            {% for nb, occurence in semaine %}
+                                <tr>
+                                    {% if nb == 0 %}
+                                        <th scope="row" rowspan="{{ semaine|length }}">S{{ num }}</th>
+                                    {% endif %}
+                                    {% for typeCours, cours in occurence %}
+                                        {% if cours['Hours'] == 0 %}
+                                            <th scope="row" class="text-warning"></th>
+                                            {% for i in 0..(cours['Details']|length-1) %}
+                                                <td scope="row"></td>
+                                            {% endfor %}
+                                        {% else %}
+                                            <th scope="row" class="text-warning">{{ cours['Hours'] }}</th>
+                                            {% for profs, details in cours['Details'] %}
+                                                {% if details is null %}
+                                                    <td scope="row"></td>
+                                                {% else %}
+                                                    <td scope="row">{{ details.nbGroupes }}</td>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
+                                    {% endfor %}
+                                </tr>
+                            {% endfor %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!--Contenu Information-->
+        <div class="tab-pane fade" id="Information">
+            <p class="text-center my-3">Oops! Les informations supplémentaires ne sont pas encore prêtes...</p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,10 @@
+@startwbs
++ Responsable de module - Page d'accueil
+++ Tableau des modules
+++ Fiche module
++++ Ajouter des enseignants
+++- Ajouter une salle
+++ Mon compte
+++- Modifier mon mot de passe
++++ Mes informations
+@endwbs

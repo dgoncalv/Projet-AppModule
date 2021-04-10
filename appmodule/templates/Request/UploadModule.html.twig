@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+{% block title %}AppModules{% endblock %}
+
+{% block body %}
+    <div class="col-12 py-5">
+        <fieldset>
+            <legend class="text-primary">Importer un CSV de modules</legend>
+            <br/>
+            <div class="form-group col">
+                {{ form_start(form) }}
+                    <div class="row">
+                        {{ form_widget(form.csvFile, { attr: { 'placeholder': 'Sélectionner un fichier' }}) }}
+                        {{ form_errors(form.csvFile, { attr: { 'placeholder': 'Sélectionner un fichier' }}) }}
+                    </div>
+                    <br/>
+                    <div class="row">
+                        {{ form_widget(form.Envoyer, {label_attr: {class: 'input-group-text'} }) }}
+                    </div>
+                {{ form_end(form) }}
+            </div>
+        </fieldset>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+        $('.custom-file-input').on('change', function(event) {
+            var inputFile = event.currentTarget;
+            $(inputFile).parent()
+                .find('.custom-file-label')
+                .html(inputFile.files[0].name);
+        });
+    </script>
+{% endblock %}

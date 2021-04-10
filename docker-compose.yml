@@ -1,0 +1,34 @@
+version: '3'
+services:
+  appmodule:
+   build: 
+     context: ./build/appmodule
+   image: iutlr-info2-dw-api-symfony
+   container_name: appmodule-iutlr-info2-dw-api-symfony
+   ports:
+     - "9998:80"
+   volumes:
+     - "./appmodule/:/var/www/html/appmodule"
+   environment:
+     - APACHE_RUN_USER=appmodule
+   networks:
+     - appmodule-network
+  mysql:
+   build:
+     context: ./build/mysql
+   image: iutlr-info2-dw-mysql
+   container_name: appmodule-iutlr-info2-dw-mysql
+   ports:
+     - "3306:3306"
+   volumes:
+     - "/var/lib/mysql"
+   environment:
+     MYSQL_DATABASE: db-appmodule
+     MYSQL_USER: appmodule
+     MYSQL_PASSWORD: appmodule
+     MYSQL_ROOT_PASSWORD: appmodule
+   networks:
+     - appmodule-network
+networks:
+  appmodule-network:
+    driver: bridge

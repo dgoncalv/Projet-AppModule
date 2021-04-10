@@ -1,0 +1,112 @@
+{% extends 'base.html.twig' %}
+{% form_theme enseignantForm 'bootstrap_4_layout.html.twig' %}
+
+{% block stylesheets %}
+    <style>
+        @supports (not (-ms-ime-align:auto)) {
+            .beautiful-label {
+                transform: translate(0.8rem, -2rem);
+                transition: all 0.2s ease-out;
+            }
+
+            input:not(:placeholder-shown) + .beautiful-label {
+                font-size:80%;
+                padding: 0 4px;
+                transform: translate(0.4rem, -3.25rem);
+                background: #fff;
+            }
+        }
+        .col-xl-0 {
+            -ms-flex: 0 0 2%;
+            flex: 0 0 2%;
+            max-width: 2%;
+        }
+    </style>
+{% endblock %}
+
+{% block title %}AppModules{% endblock %}
+
+{% block body %}
+    <div class="col-xl-12 py-5">
+        {{ form_start(enseignantForm) }}
+            <fieldset>
+                <div class="row">
+                    <div class="col-xl-1">
+                        <div>
+                            {{ form_widget(enseignantForm.trigramme, {attr: {'class': 'text-body', 'style': 'box-sizing:\'\'', 'placeholder': ' ', 'value': enseignant.trigramme, 'readonly': ""} }) }}
+                            <label for="enseignant_trigramme" class="text-secondary beautiful-label">TriG</label>
+                        </div>
+                    </div>
+                    <div class="col-xl-0">
+                        <h4 class="text-secondary text-center">-</h4>
+                    </div>
+                    <div class="col-xl-4">
+                        <div>
+                            {{ form_widget(enseignantForm.prenom, {attr: {'class': 'text-body', 'style': 'box-sizing:\'\'', 'placeholder': ' ', 'value': enseignant.prenom, 'readonly': ""} }) }}
+                            <label for="enseignant_trigramme" class="text-secondary beautiful-label">Prénom</label>
+                        </div>
+                    </div>
+                    <div class="col-xl-4">
+                        <div>
+                            {{ form_widget(enseignantForm.nom, {attr: {'class': 'text-body', 'style': 'box-sizing:\'\'', 'placeholder': ' ', 'value': enseignant.nom, 'readonly': ""} }) }}
+                            <label for="enseignant_trigramme" class="text-secondary beautiful-label">Nom</label>
+                        </div>
+                    </div>
+                    <div class="col-xl-2">
+                        <div>
+                            {{ form_widget(enseignantForm.statut, {attr: {'class': 'custom-select text-body', 'list': 'statutList', 'style': 'box-sizing:\'\'', 'placeholder': ' ', 'value': enseignant.statut} }) }}
+                            <label for="enseignant_trigramme" class="text-body beautiful-label">Statut</label>
+                            <datalist id="statutList">
+                                <option>SEC</option>
+                                <option>SUP</option>
+                                <option>ATER</option>
+                                <option>BIATSS</option>
+                                <option>VAC_SEC</option>
+                                <option>VAC_SUP</option>
+                                <option>VAC_PRO</option>
+                                <option>VAC_ULR</option>
+                                <option>VAC</option>
+                                <option>INC</option>
+                            </datalist>
+                            <small class="form-text text-muted text-warning" style="margin-top: -2rem">{{ form_errors(enseignantForm.statut) }}</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-5">
+                        <div>
+                            {{ form_widget(enseignantForm.contact, {attr: {'class': 'text-body', 'style': 'box-sizing:\'\'', 'placeholder': ' ', 'value': enseignant.contact} }) }}
+                            <label for="enseignant_trigramme" class="text-primary beautiful-label">Contact</label>
+                            <small class="form-text text-muted text-warning">{{ form_errors(enseignantForm.contact) }}</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-top: -1rem">
+                    <div class="col-xl-3">
+                        <div>
+                            <div class="input-group">
+                                {{ form_widget(enseignantForm.serviceDu, {attr: {'class': 'text-body', 'style': 'box-sizing:\'\'', 'placeholder': 'Service dû', 'value': enseignant.serviceDu} }) }}
+                                <div class="input-group-append">
+                                    <span class="input-group-text text-primary">h</span>
+                                </div>
+                                <small class="form-text text-muted text-warning">{{ form_errors(enseignantForm.serviceDu) }}</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr class="border-primary">
+                <div class="fixed-bottom bg-white border-top border-secondary">
+                    <div class="container">
+                        <div class="float-right my-2 mx-3">
+                            <button type="submit" id="enseignant_submit" class="btn btn-primary">Confirmer</button>
+                            <a href="{{ path('enseignant', {'trigramme': enseignant.trigramme}) }}" class="btn btn-outline-secondary">Annuler</a>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        {{ form_end(enseignantForm) }}
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+{% endblock %}

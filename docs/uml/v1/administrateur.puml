@@ -1,0 +1,15 @@
+@startwbs
++ Administrateur - Page d'accueil
+++ Tableau des modules
+++ Fiche module
++++ Ajouter des enseignants
+++- Ajouter une salle
+++ Importer des enseignants
++++ Liste des enseignants
+++ Importer des modules
++++ Liste des modules
+++ Exportation
+++ Mon compte
+++- Modifier mon mot de passe
++++ Mes informations
+@endwbs

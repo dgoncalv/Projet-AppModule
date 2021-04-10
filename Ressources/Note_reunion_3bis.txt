@@ -1,0 +1,16 @@
+Setting Docker	> General >décocher use WSL2 
+		> Experimental Features > enable cloud experience
+rm -rf mysql
+docker-compose up --build
+
+docker-compose appmodule bash
+php bin/console make:migration
+php bin/console doctrine:migrations:migrate
+
+base vide > importer csv
+
+on ne peut que consulter
+
+se décider sur :
+quel est notre vision produit en respectant les attentes du client?
+découpage vision produit - répartition travail?

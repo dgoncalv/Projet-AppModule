@@ -1,0 +1,10 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+actor User
+database Database
+rectangle "Gestion enseignants" {
+  User -- (Fichier CSV)
+  (Fichier CSV) -- Database
+}
+@enduml

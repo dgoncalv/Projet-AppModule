@@ -1,0 +1,2 @@
+[37;41mCould not drop database [39;49m[33m`db-appmodule`[39m[37;41m for connection named [39;49m[33mdefault[39m
+[37;41mAn exception occurred in driver: SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo failed: Hôte inconnu. [39;49m
