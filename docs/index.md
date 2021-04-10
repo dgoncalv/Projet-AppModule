@@ -10,10 +10,8 @@
 <br>
 [4. Environnements](4_environnements.md)
 <br>
-[5. Intégration continue](5_integration_continue.md)
+[5. Tests](6_tests.md)
 <br>
-[6. Tests](6_tests.md)
+[6. UML](7_uml.md)
 <br>
-[7. UML](7_uml.md)
-<br>
-[8. Mise en production](8_production.md)
+[7. Mise en production](8_production.md)
