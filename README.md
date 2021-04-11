@@ -14,3 +14,6 @@ Etudiants :
 
 ## Documentation
 La documentation est disponible [ici](docs/index.md).
+
+## Gestion du projet
+Le miro de gestion du projet est disponible [ici](https://miro.com/welcomeonboard/mfuiTylkSVU0phWbv3I8Lr9o55W5RIYHddqq4aIbxSWHbmeoAh0ybdUCjgnVtO4Q)
